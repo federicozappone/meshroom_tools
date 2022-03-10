@@ -1,0 +1,11 @@
+__pycache__/
+meshroom/
+
+*.mp4
+*.jpg
+*.png
+
+*.obj
+*.ply
+
+/Meshroom
