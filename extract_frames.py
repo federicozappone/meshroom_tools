@@ -13,6 +13,8 @@ if __name__ == "__main__":
         print("Usage: python extract_frames.py video_file_name.mp4")
         exit(0)
 
+    decimation = 5
+
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
 
     print(f"File name: {sys.argv[1]}")
@@ -34,23 +36,13 @@ if __name__ == "__main__":
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    skips = 0
-    index = 0
-
     for i in tqdm(range(num_frames)):
         ret, frame = cap.read()
 
-        skips += 1
-
-        if skips == 5:
-            skips = 0
-
-        if skips != 1:
+        if i % decimation != 0:
             continue
 
-        filename = f"{output_dir}/{index:06d}.png"
+        filename = f"{output_dir}/{i // decimation:06d}.png"
         executor.submit(cv2.imwrite, filename, frame)
-
-        index += 1
 
     print("Done.")
