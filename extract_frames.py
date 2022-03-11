@@ -10,17 +10,22 @@ from datetime import datetime
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python extract_frames.py video_file_name.mp4")
+        print("Usage: python extract_frames.py video_file_name.mp4 [decimation]")
         exit(0)
 
-    decimation = 5
+    if len(sys.argv) == 3:
+        decimation = int(sys.argv[2])
+    else:
+        decimation = 1
+
+    print(f"Decimation: {decimation}")
 
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
 
-    print(f"File name: {sys.argv[1]}")
-    cap = cv2.VideoCapture(sys.argv[1])
-
     file_name = os.path.basename(sys.argv[1])
+
+    print(f"File name: {file_name}")
+    cap = cv2.VideoCapture(file_name)
 
     num_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
